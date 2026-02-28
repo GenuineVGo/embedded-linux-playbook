@@ -1,0 +1,76 @@
+# ============================================
+# embedded-linux-playbook — .gitignore
+# ============================================
+
+# --- Local overrides (never commit) ---
+local.mk
+
+# --- Yocto ---
+build/
+tmp*/
+sstate-cache/
+downloads/
+_yocto-cache/
+cache/
+*.lock
+bitbake-cookerdaemon.log
+
+# --- Buildroot ---
+output/
+dl/
+.config
+.config.old
+
+# --- Kernel build artifacts ---
+*.ko
+*.o
+*.mod
+*.mod.c
+*.order
+*.symvers
+*.cmd
+modules.builtin
+Module.symvers
+
+# --- Binary artifacts ---
+*.img
+*.wic
+*.wic.gz
+*.wic.bz2
+*.dtb
+*.dtbo
+*.bin
+*.elf
+*.fw
+
+# --- Logs ---
+# collected logs are gitignored (use journal/ for chosen excerpts)
+logs/
+*.log
+
+# --- Yocto conf (samples are versioned, not real conf) ---
+local.conf
+bblayers.conf
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDE / editors ---
+.vscode/
+!tools/vscode/
+.idea/
+*.swp
+*.swo
+*~
+\#*\#
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+
+# --- Vendor blobs (never commit) ---
+*.imx
+firmware-imx*/

@@ -1,0 +1,21 @@
+# bblayers.conf.sample — Golden config for embedded-linux-playbook
+# Copy to build/conf/bblayers.conf (or let kas handle it)
+#
+# WARNING: Do not commit the real bblayers.conf — only this sample.
+# Adjust TOPDIR paths to match your source layout.
+
+POKY_BBLAYERS_CONF_VERSION = "2"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+BBLAYERS ?= " \
+  /path/to/poky/meta \
+  /path/to/poky/meta-poky \
+  /path/to/poky/meta-yocto-bsp \
+  /path/to/meta-openembedded/meta-oe \
+  /path/to/meta-openembedded/meta-python \
+  /path/to/meta-openembedded/meta-networking \
+  /path/to/meta-raspberrypi \
+  /path/to/embedded-linux-playbook/yocto/meta-vincent \
+"

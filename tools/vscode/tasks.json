@@ -1,0 +1,106 @@
+{
+    // Build tasks — Ctrl+Shift+B to build, Ctrl+Shift+P > "Run Task" for all
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Buildroot: build RPi4",
+            "type": "shell",
+            "command": "make buildroot-rpi4",
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "Yocto: build RPi4",
+            "type": "shell",
+            "command": "make yocto-rpi4",
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "Kernel module: build (native)",
+            "type": "shell",
+            "command": "make KDIR=${input:kernelDir}",
+            "group": "build",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Kernel module: clean",
+            "type": "shell",
+            "command": "make KDIR=${input:kernelDir} clean",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flash RPi4",
+            "type": "shell",
+            "command": "make flash-rpi4 FLASH_DEV=${input:flashDev}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Collect RPi4 logs",
+            "type": "shell",
+            "command": "make logs",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Journal: create today's entry",
+            "type": "shell",
+            "command": "make journal",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Pre-push check",
+            "type": "shell",
+            "command": "scripts/prepush_check.sh",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "kernelDir",
+            "description": "Path to kernel build directory",
+            "type": "promptString",
+            "default": "/lib/modules/$(uname -r)/build"
+        },
+        {
+            "id": "flashDev",
+            "description": "SD card block device (e.g., /dev/sdb)",
+            "type": "promptString",
+            "default": "/dev/sdb"
+        }
+    ]
+}

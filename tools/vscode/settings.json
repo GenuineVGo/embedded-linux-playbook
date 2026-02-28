@@ -1,0 +1,71 @@
+{
+    // embedded-linux-playbook — VSCode workspace settings
+    // Copy this directory to .vscode/ at the repo root:
+    //   cp -r tools/vscode/* .vscode/
+
+    // ── Editor ──────────────────────────────────────────
+    "editor.formatOnSave": false,
+    "editor.rulers": [80, 100],
+    "editor.renderWhitespace": "trailing",
+    "editor.trimAutoWhitespace": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+
+    // ── File associations ───────────────────────────────
+    "files.associations": {
+        "*.bb": "bitbake",
+        "*.bbappend": "bitbake",
+        "*.bbclass": "bitbake",
+        "*.inc": "bitbake",
+        "*.conf": "bitbake",
+        "*.dts": "dts",
+        "*.dtsi": "dts",
+        "*.dtso": "dts",
+        "Kconfig": "kconfig",
+        "Kconfig.*": "kconfig",
+        "Config.in": "kconfig",
+        "*.defconfig": "kconfig",
+        "Makefile.*": "makefile",
+        "*.mk": "makefile"
+    },
+
+    // ── Search exclusions ───────────────────────────────
+    "search.exclude": {
+        "**/build": true,
+        "**/output": true,
+        "**/tmp*": true,
+        "**/sstate-cache": true,
+        "**/downloads": true,
+        "**/_yocto-cache": true,
+        "**/dl": true,
+        "**/.git": true,
+        "**/node_modules": true
+    },
+    "files.watcherExclude": {
+        "**/build/**": true,
+        "**/output/**": true,
+        "**/tmp*/**": true,
+        "**/sstate-cache/**": true,
+        "**/_yocto-cache/**": true
+    },
+
+    // ── C/C++ (kernel modules) ──────────────────────────
+    // Actual include paths are in c_cpp_properties.json
+    "C_Cpp.default.cStandard": "gnu11",
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-arm64",
+    "C_Cpp.errorSquiggles": "enabled",
+
+    // ── ShellCheck ──────────────────────────────────────
+    "shellcheck.enable": true,
+    "shellcheck.executablePath": "shellcheck",
+
+    // ── Terminal ────────────────────────────────────────
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.scrollback": 10000,
+
+    // ── Git ─────────────────────────────────────────────
+    "git.autofetch": false,
+    "git.confirmSync": true
+}

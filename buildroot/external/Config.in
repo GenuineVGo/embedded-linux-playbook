@@ -1,0 +1,2 @@
+source "$BR2_EXTERNAL_VINCENT_PATH/package/vincent-hello/Config.in"
+source "$BR2_EXTERNAL_VINCENT_PATH/package/vincent-sensors/Config.in"

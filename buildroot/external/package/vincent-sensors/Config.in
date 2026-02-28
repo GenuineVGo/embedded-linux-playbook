@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VINCENT_SENSORS
+	bool "vincent-sensors"
+	help
+	  Custom I2C/SPI sensor drivers — Phase 3 learning exercise.

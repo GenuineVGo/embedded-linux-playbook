@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VINCENT_HELLO
+	bool "vincent-hello"
+	help
+	  Hello world kernel module — Phase 1 learning exercise.

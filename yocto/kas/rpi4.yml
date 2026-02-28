@@ -1,0 +1,23 @@
+header:
+  version: 14
+  includes:
+    - common.yml
+
+machine: raspberrypi4-64
+target: core-image-minimal
+
+repos:
+  meta-raspberrypi:
+    url: "https://github.com/agherzan/meta-raspberrypi.git"
+    refspec: scarthgap
+
+local_conf_header:
+  rpi4: |
+    BB_NUMBER_THREADS = "24"
+    PARALLEL_MAKE = "-j24"
+    # RPi4 specific
+    ENABLE_UART = "1"
+    # SSH access for log collection (make logs) and debug
+    EXTRA_IMAGE_FEATURES:append = " ssh-server-dropbear"
+    # Produce uncompressed .wic for direct flash (in addition to .wic.bz2)
+    IMAGE_FSTYPES:append = " wic"

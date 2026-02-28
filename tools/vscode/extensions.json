@@ -1,0 +1,34 @@
+{
+    // Recommended extensions for embedded-linux-playbook
+    // VSCode will prompt to install these when opening the workspace.
+    "recommendations": [
+        // C/C++ — IntelliSense, debugging, code navigation
+        "ms-vscode.cpptools",
+
+        // Remote development
+        "ms-vscode-remote.remote-ssh",
+        "ms-vscode-remote.remote-wsl",
+
+        // DeviceTree — syntax highlighting for .dts/.dtsi
+        "plorefice.devicetree",
+
+        // BitBake — syntax highlighting for Yocto recipes
+        "yocto-project.yocto-bitbake",
+
+        // Git
+        "eamodio.gitlens",
+
+        // Shell scripting
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format",
+
+        // Makefile
+        "ms-vscode.makefile-tools",
+
+        // YAML — for kas manifests
+        "redhat.vscode-yaml",
+
+        // Markdown — for docs and journal
+        "yzhang.markdown-all-in-one"
+    ]
+}

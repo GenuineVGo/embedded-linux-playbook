@@ -1,0 +1,71 @@
+{
+    // C/C++ IntelliSense for Linux kernel module development
+    //
+    // IMPORTANT: Adapt "compilerPath" and "includePath" to your setup.
+    // Without correct kernel headers, IntelliSense marks everything red
+    // and Go to Definition (F12) doesn't work.
+    //
+    // Two configurations provided:
+    //   - "CM3588 native"  : for native aarch64 dev on CM3588 (or via Remote-SSH)
+    //   - "WSL cross"      : for cross-compilation from MS-A2 WSL
+
+    "version": 4,
+    "configurations": [
+        {
+            "name": "CM3588 native (aarch64)",
+            "compilerPath": "/usr/bin/gcc",
+            "compilerArgs": [],
+            "intelliSenseMode": "linux-gcc-arm64",
+            "cStandard": "gnu11",
+            "includePath": [
+                "${workspaceFolder}/kernel/modules/**",
+                // ── Kernel headers ──
+                // Option A: installed headers (apt install linux-headers-$(uname -r))
+                "/lib/modules/${command:extension.commandvariable.file.relativeFileDirname}/build/include",
+                // Option B: RPi kernel source tree (after make modules_prepare)
+                // Uncomment and adapt:
+                // "${HOME}/sources/linux-rpi/include",
+                // "${HOME}/sources/linux-rpi/include/uapi",
+                // "${HOME}/sources/linux-rpi/arch/arm64/include",
+                // "${HOME}/sources/linux-rpi/arch/arm64/include/generated"
+                ""
+            ],
+            "defines": [
+                "__KERNEL__",
+                "MODULE",
+                "__linux__",
+                "__aarch64__",
+                "CONFIG_ARM64"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
+        },
+        {
+            "name": "WSL cross (x86_64 → aarch64)",
+            "compilerPath": "/usr/bin/aarch64-linux-gnu-gcc",
+            "compilerArgs": [],
+            "intelliSenseMode": "linux-gcc-arm64",
+            "cStandard": "gnu11",
+            "includePath": [
+                "${workspaceFolder}/kernel/modules/**",
+                // ── Cross kernel headers ──
+                // From Yocto SDK (after: kas shell ... then bitbake -c populate_sdk)
+                // Uncomment and adapt:
+                // "${HOME}/yocto-sdk/sysroots/cortexa72-poky-linux/usr/src/kernel/include",
+                // "${HOME}/yocto-sdk/sysroots/cortexa72-poky-linux/usr/src/kernel/arch/arm64/include",
+                //
+                // Or from Buildroot output:
+                // "/dev/shm/buildroot-build/build/linux-*/include",
+                ""
+            ],
+            "defines": [
+                "__KERNEL__",
+                "MODULE",
+                "__linux__",
+                "__aarch64__",
+                "CONFIG_ARM64"
+            ]
+        }
+    ]
+}

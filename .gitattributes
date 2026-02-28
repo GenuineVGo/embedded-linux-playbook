@@ -1,0 +1,49 @@
+# Force LF line endings everywhere (critical for WSL/Linux interop)
+* text=auto eol=lf
+
+# Scripts — always LF
+*.sh text eol=lf
+*.py text eol=lf
+*.pl text eol=lf
+
+# Config files — always LF
+*.yml text eol=lf
+*.yaml text eol=lf
+*.conf text eol=lf
+*.cfg text eol=lf
+*.mk text eol=lf
+*.in text eol=lf
+Makefile text eol=lf
+Kbuild text eol=lf
+Kconfig text eol=lf
+
+# Documentation — always LF
+*.md text eol=lf
+*.txt text eol=lf
+*.rst text eol=lf
+
+# Source code — always LF
+*.c text eol=lf
+*.h text eol=lf
+*.dts text eol=lf
+*.dtsi text eol=lf
+*.bb text eol=lf
+*.bbappend text eol=lf
+*.bbclass text eol=lf
+*.patch text eol=lf
+
+# Binaries — no conversion
+*.png binary
+*.jpg binary
+*.gif binary
+*.dtb binary
+*.dtbo binary
+*.bin binary
+*.elf binary
+*.ko binary
+*.img binary
+*.wic binary
+*.gz binary
+*.bz2 binary
+*.xz binary
+*.zst binary

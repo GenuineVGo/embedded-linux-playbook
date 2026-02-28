@@ -1,0 +1,25 @@
+# local.conf.sample — Golden config for embedded-linux-playbook
+# Copy to build/conf/local.conf (or let kas handle it)
+#
+# WARNING: Do not commit the real local.conf — only this sample.
+
+MACHINE ?= "raspberrypi4-64"
+DISTRO ?= "poky"
+
+# Cache strategy — relative to TOPDIR, symlink to large disk if needed
+DL_DIR = "${TOPDIR}/../_yocto-cache/downloads"
+SSTATE_DIR = "${TOPDIR}/../_yocto-cache/sstate-cache"
+
+# Parallelism — adjust to your host
+# MS-A2 (16c/32t): 24 is a good balance
+BB_NUMBER_THREADS = "24"
+PARALLEL_MAKE = "-j24"
+
+# RPi4: enable UART for debug
+ENABLE_UART = "1"
+
+# Package format
+PACKAGE_CLASSES = "package_ipk"
+
+# Extra image space for development
+IMAGE_ROOTFS_EXTRA_SPACE = "1048576"

@@ -1,0 +1,31 @@
+header:
+  version: 14
+
+distro: poky
+
+repos:
+  poky:
+    url: "git://git.yoctoproject.org/poky"
+    refspec: scarthgap
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+
+  meta-openembedded:
+    url: "https://github.com/openembedded/meta-openembedded.git"
+    refspec: scarthgap
+    layers:
+      meta-oe:
+      meta-python:
+      meta-networking:
+
+  meta-vincent:
+    path: "../meta-vincent"
+
+local_conf_header:
+  standard: |
+    # Cache strategy — relative to TOPDIR, symlink to large disk if needed
+    # Survives rm -rf build/ as long as parent dir is intact
+    DL_DIR = "${TOPDIR}/../_yocto-cache/downloads"
+    SSTATE_DIR = "${TOPDIR}/../_yocto-cache/sstate-cache"
