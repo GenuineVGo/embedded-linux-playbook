@@ -21,7 +21,7 @@ repos:
       meta-networking:
 
   meta-vincent:
-    path: "../meta-vincent"
+    path: "/home/user/workspace/embedded-linux-playbook/yocto/meta-vincent"
 
 local_conf_header:
   standard: |
