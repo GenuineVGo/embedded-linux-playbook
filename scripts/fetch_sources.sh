@@ -47,6 +47,19 @@ cd "$SOURCES_DIR"
 
 clone_or_update() {
     local name="$1" url="$2" branch="${3:-}"
+    if [ "${DRY_RUN:-0}" = "1" ]; then
+        if [ -d "$name" ]; then
+            echo "DRY_RUN: would update $name (fetch + checkout $branch)"
+        else
+            if [ -n "$branch" ]; then
+                echo "DRY_RUN: would clone -b $branch $url $name"
+            else
+                echo "DRY_RUN: would clone $url $name"
+            fi
+        fi
+        return 0
+    fi
+
     if [ -d "$name" ]; then
         echo "=== Updating $name ==="
         cd "$name"
