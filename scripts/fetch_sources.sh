@@ -4,7 +4,43 @@
 set -euo pipefail
 
 SOURCES_DIR="${1:-$HOME/sources}"
+TARGET="${2:-all}"
 YOCTO_BRANCH="scarthgap"
+
+usage() {
+    cat <<EOF
+Usage: $0 [sources_dir] [target]
+
+  sources_dir : destination directory for cloned repos (default: \$HOME/sources)
+  target      : one of 'all' (default), 'buildroot', 'yocto'
+
+Examples:
+  $0 ~/sources buildroot   # Buildroot + kernel only (CM3588+)
+  $0 ~/sources yocto       # Poky (yocto) + kernel only (MS-A2)
+  $0 ~/sources             # all
+EOF
+    exit 1
+}
+
+if [ "${SOURCES_DIR#-}" != "$SOURCES_DIR" ] || [ "$SOURCES_DIR" = "-h" ] || [ "$SOURCES_DIR" = "--help" ]; then
+    usage
+fi
+
+case "$TARGET" in
+    all)
+        DO_BUILDROOT=1; DO_YOCTO=1; DO_KERNEL=1
+        ;;
+    buildroot)
+        DO_BUILDROOT=1; DO_YOCTO=0; DO_KERNEL=1
+        ;;
+    yocto)
+        DO_BUILDROOT=0; DO_YOCTO=1; DO_KERNEL=1
+        ;;
+    *)
+        echo "Unknown target: $TARGET" >&2
+        usage
+        ;;
+esac
 
 mkdir -p "$SOURCES_DIR"
 cd "$SOURCES_DIR"
@@ -28,18 +64,29 @@ clone_or_update() {
 }
 
 echo "=== Fetching sources to $SOURCES_DIR ==="
-
 # Buildroot (latest stable)
-clone_or_update buildroot https://gitlab.com/buildroot.org/buildroot.git
+if [ "${DO_BUILDROOT:-0}" -eq 1 ]; then
+    clone_or_update buildroot https://gitlab.com/buildroot.org/buildroot.git
+fi
 
 # Yocto is handled by kas — this is for manual exploration only
-clone_or_update poky git://git.yoctoproject.org/poky "$YOCTO_BRANCH"
+if [ "${DO_YOCTO:-0}" -eq 1 ]; then
+    clone_or_update poky git://git.yoctoproject.org/poky "$YOCTO_BRANCH"
+fi
 
 # Linux kernel (RPi4 fork, for manual compilation exercises)
-clone_or_update linux-rpi https://github.com/raspberrypi/linux.git rpi-6.6.y
+if [ "${DO_KERNEL:-0}" -eq 1 ]; then
+    clone_or_update linux-rpi https://github.com/raspberrypi/linux.git rpi-6.6.y
+fi
 
 echo ""
 echo "Sources ready in: $SOURCES_DIR"
-echo "  Buildroot: $SOURCES_DIR/buildroot"
-echo "  Poky:      $SOURCES_DIR/poky"
-echo "  Linux:     $SOURCES_DIR/linux-rpi"
+if [ "${DO_BUILDROOT:-0}" -eq 1 ]; then
+    echo "  Buildroot: $SOURCES_DIR/buildroot"
+fi
+if [ "${DO_YOCTO:-0}" -eq 1 ]; then
+    echo "  Poky:      $SOURCES_DIR/poky"
+fi
+if [ "${DO_KERNEL:-0}" -eq 1 ]; then
+    echo "  Linux:     $SOURCES_DIR/linux-rpi"
+fi
