@@ -3,8 +3,8 @@
 #
 # Local overrides: create local.mk (gitignored) with your paths:
 #   BUILDROOT_SRC = ~/sources/buildroot
-#   RPI_HOST = root@rpi4.local
-#   FLASH_DEV = /dev/sdb
+#   root@192.168.137.6
+#   FLASH_DEV = /dev/sda
 -include local.mk
 
 BUILDROOT_SRC    ?= $(HOME)/buildroot
@@ -20,15 +20,20 @@ IMAGE            ?=
 RPI_HOST         ?= root@rpi4.local
 
 .PHONY: help buildroot-rpi4 yocto-rpi4 flash-rpi4 flash-buildroot-rpi4 flash-yocto-rpi4 \
-        logs bootstrap-wsl bootstrap-debian journal find-images clean
+        logs bootstrap-wsl bootstrap-debian journal find-images clean br-menuconfig \
+		br-savedefconfig print-vars buildroot-rpi4-fast
 
 help:
 	@echo ""
 	@echo "embedded-linux-playbook — available targets:"
 	@echo ""
 	@echo "  Build:"
-	@echo "    buildroot-rpi4    Build Buildroot for RPi4 in tmpfs (BR2_OUT=/dev/shm/buildroot-build)"
-	@echo "    yocto-rpi4        Build Yocto for RPi4 via kas (on MS-A2)"
+	@echo "    print-vars           Show effective Buildroot variables"
+	@echo "    br-menuconfig        Run Buildroot menuconfig (O=$(BR2_OUT))"
+	@echo "    br-savedefconfig     Save to $(BUILDROOT_EXT)/configs/rpi4_64_defconfig"
+	@echo "    buildroot-rpi4       Build Buildroot for RPi4 (BR2_OUT=$(BR2_OUT))"
+	@echo "    buildroot-rpi4-fast  Build Buildroot using tmpfs (BR2_OUT=/dev/shm/buildroot-build)"
+	@echo "    yocto-rpi4           Build Yocto for RPi4 via kas (on MS-A2)"
 	@echo ""
 	@echo "  Deploy:"
 	@echo "    flash-rpi4             Flash image (set FLASH_DEV + IMAGE)"
@@ -47,6 +52,24 @@ help:
 	@echo ""
 
 # --- Build ---
+print-vars:
+	@echo "BUILDROOT_SRC = $(BUILDROOT_SRC)"
+	@echo "BUILDROOT_EXT = $(BUILDROOT_EXT)"
+	@echo "BR2_OUT       = $(BR2_OUT)"
+	@echo "BR2_DL_DIR    = $(BR2_DL_DIR)"
+
+br-menuconfig:
+	@test -d $(BUILDROOT_SRC) || (echo "ERROR: BUILDROOT_SRC=$(BUILDROOT_SRC) not found." && exit 1)
+	@mkdir -p $(BR2_OUT) $(BR2_DL_DIR)
+	cd $(BUILDROOT_SRC) && \
+	make O=$(BR2_OUT) BR2_EXTERNAL=$(BUILDROOT_EXT) BR2_DL_DIR=$(BR2_DL_DIR) menuconfig
+	# After customizing menuconfig, save your defconfig:
+
+br-savedefconfig:
+	@test -d $(BUILDROOT_SRC) || (echo "ERROR: BUILDROOT_SRC=$(BUILDROOT_SRC) not found." && exit 1)
+	@mkdir -p $(BUILDROOT_EXT)/configs
+	cd $(BUILDROOT_SRC) && \
+	make O=$(BR2_OUT) savedefconfig BR2_DEFCONFIG=$(BUILDROOT_EXT)/configs/rpi4_64_defconfig
 
 buildroot-rpi4:
 	@test -d $(BUILDROOT_SRC) || \
@@ -55,14 +78,17 @@ buildroot-rpi4:
 		 exit 1)
 	@mkdir -p $(BR2_OUT) $(BR2_DL_DIR)
 	cd $(BUILDROOT_SRC) && \
-	make O=$(BR2_OUT) BR2_EXTERNAL=$(BUILDROOT_EXT) BR2_DL_DIR=$(BR2_DL_DIR) raspberrypi4_64_defconfig && \
-	make O=$(BR2_OUT) BR2_DL_DIR=$(BR2_DL_DIR) -j$$(nproc)
+	make O=$(BR2_OUT) BR2_EXTERNAL=$(BUILDROOT_EXT) BR2_DL_DIR=$(BR2_DL_DIR) rpi4_64_defconfig && \
+	make O=$(BR2_OUT) BR2_EXTERNAL=$(BUILDROOT_EXT) BR2_DL_DIR=$(BR2_DL_DIR) -j$$(nproc)
 	@echo ""
 	@echo "Build output: $(BR2_OUT)"
 	@echo "Images:       $(BR2_OUT)/images/"
 	@echo ""
 	@echo "To save your customized config:"
 	@echo "  cd $(BUILDROOT_SRC) && make O=$(BR2_OUT) savedefconfig BR2_DEFCONFIG=$(BUILDROOT_EXT)/configs/rpi4_64_defconfig"
+
+buildroot-rpi4-fast:
+	$(MAKE) buildroot-rpi4 BR2_OUT=/dev/shm/buildroot-build
 
 yocto-rpi4:
 	@command -v kas >/dev/null 2>&1 || \

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+    ip link set eth0 up 2>/dev/null
+    ip addr flush dev eth0 2>/dev/null
+    ip addr add 192.168.137.6/24 dev eth0
+    ip route replace default via 192.168.137.1
+    echo "nameserver 192.168.137.1" > /etc/resolv.conf
+    ;;
+  stop)
+    ;;
+  restart)
+    $0 start
+    ;;
+esac
+exit 0
