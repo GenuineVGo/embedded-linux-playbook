@@ -5,9 +5,13 @@
 # --- Local overrides (never commit) ---
 local.mk
 
-# --- Yocto ---
+# --- Yocto external layers (fetched by kas, not versioned) ---
+poky/
+meta-openembedded/
+meta-raspberrypi/
+
+# --- Yocto build ---
 build/
-tmp*/
 sstate-cache/
 downloads/
 _yocto-cache/
@@ -74,3 +78,14 @@ __pycache__/
 # --- Vendor blobs (never commit) ---
 *.imx
 firmware-imx*/
+
+# --- SSH / host keys (never commit private keys) ---
+dropbear_*_host_key
+*.pem
+*.key
+
+# Common private key filenames (but keep public keys)
+id_rsa
+id_ed25519
+id_ecdsa
+!*.pub
