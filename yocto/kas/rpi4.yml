@@ -27,7 +27,8 @@ local_conf_header:
     IMAGE_INSTALL:append = " ssh-keys avahi-daemon avahi-utils libnss-mdns dbus"
 
     # Produce uncompressed .wic for direct flash (in addition to .wic.bz2)
-    IMAGE_FSTYPES:append = " wic"
+    # rootfs-only updates (dd to /dev/mmcblk0p2)
+    IMAGE_FSTYPES:append = " wic ext4"
 
     # Hostname
     hostname:pn-base-files = "rpi4-yocto"

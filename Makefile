@@ -140,10 +140,10 @@ journal:
 
 find-images:
 	@echo "=== Buildroot images ==="
-	@ls -lh $(BR2_OUT)/images/*.img $(BR2_OUT)/images/*.wic 2>/dev/null || echo "  (none — run: make buildroot-rpi4)"
+	@ls -lh $(BR2_OUT)/images/*.img $(BR2_OUT)/images/*.wic $(BR2_OUT)/images/*.ext4 2>/dev/null || echo "  (none — run: make buildroot-rpi4)"
 	@echo ""
 	@echo "=== Yocto images ==="
-	@find . -path '*/deploy/images/raspberrypi4-64/*.wic*' -type f 2>/dev/null | sort || echo "  (none — run: make yocto-rpi4)"
+	@find . -path '*/deploy/images/raspberrypi4-64/*rootfs*' \( -name '*.wic*' -o -name '*.ext4*' \) -type f 2>/dev/null | sort || echo "  (none — run: make yocto-rpi4)"
 	@echo ""
 	@echo "Flash with: make flash-rpi4 FLASH_DEV=/dev/sdX"
 	@echo "  or: scripts/flash_rpi4.sh /dev/sdX path/to/image"
