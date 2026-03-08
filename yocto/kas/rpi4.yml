@@ -15,9 +15,19 @@ local_conf_header:
   rpi4: |
     BB_NUMBER_THREADS = "24"
     PARALLEL_MAKE = "-j24"
+
     # RPi4 specific
     ENABLE_UART = "1"
-    # SSH access for log collection (make logs) and debug
-    EXTRA_IMAGE_FEATURES:append = " ssh-server-dropbear"
+
+    # Image features (pas des packages) pour le debug et ssh
+    EXTRA_IMAGE_FEATURES:append = " debug-tweaks"
+    IMAGE_FEATURES:append = " ssh-server-dropbear"
+
+    # Packages à installer 
+    IMAGE_INSTALL:append = " ssh-keys avahi-daemon avahi-utils libnss-mdns dbus"
+
     # Produce uncompressed .wic for direct flash (in addition to .wic.bz2)
     IMAGE_FSTYPES:append = " wic"
+
+    # Hostname
+    hostname:pn-base-files = "rpi4-yocto"
